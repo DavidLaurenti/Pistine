@@ -9,18 +9,17 @@ def render_sidebar():
         nuovo_giocatore = st.text_input("Nome Giocatore")
         if st.button("Aggiungi al Tavolo"):
             if nuovo_giocatore and nuovo_giocatore not in st.session_state['giocatori']:
+                if st.session_state.get('turno_matto') and nuovo_giocatore not in st.session_state['matti_da_fare']:
+                    st.session_state['matti_da_fare'].append(nuovo_giocatore)
                 if nuovo_giocatore == "Flavio":
                     st.snow()
                 st.session_state['giocatori'].append(nuovo_giocatore)
-                # Inizializza a 0.0 se non esiste
                 if nuovo_giocatore not in st.session_state['punteggi']:
                     st.session_state['punteggi'][nuovo_giocatore] = 0.0
-
-                # Se è il primo, diventa mazziere
                 if len(st.session_state['giocatori']) == 1:
                     st.session_state['mazziere_corrente'] = nuovo_giocatore
                 st.rerun()
-
+                
         st.divider()
 
         # SELEZIONE DEL MAZZIERE

@@ -44,13 +44,16 @@ def annulla_mano():
                 try:
                     ultima_mano = st.session_state['storico'].pop()
                     for nome, punti in ultima_mano.items():
-                        if not str(nome).startswith('_'): # Ignora metadati del matto
+                        if not str(nome).startswith('_'):
                             if nome in st.session_state['punteggi']:
                                 st.session_state['punteggi'][nome] -= punti
                             else:
                                 st.session_state['punteggi'][nome] = -punti
+                    if ultima_mano.get('_is_matto'):
+                        giocatore_matto = ultima_mano.get('_matto_player')
+                        if giocatore_matto and giocatore_matto not in st.session_state['matti_da_fare']:
+                            st.session_state['matti_da_fare'].append(giocatore_matto)
                     st.success("Ultima mano annullata!")
                     st.rerun()
                 except Exception as e:
                     st.error(f"Errore: {e}")
-                    

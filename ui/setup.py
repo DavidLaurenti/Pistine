@@ -40,22 +40,22 @@ def render_setup():
             st.session_state['turno_matto'] = turno_matto
             
         
-        # Algoritmo del turno matto
-        # Algoritmo del turno matto
-        if turno_matto:
-            st.session_state['matto_base'] = base
-            st.session_state['matto_var'] = var
+            # Algoritmo del turno matto
+            # Algoritmo del turno matto
+            if turno_matto:
+                st.session_state['matto_base'] = base
+                st.session_state['matto_var'] = var
 
-            # Copiamo la lista di chi deve fare il matto
-            st.session_state['matti_da_fare'] = nomi_list.copy()
+                # Copiamo la lista di chi deve fare il matto
+                st.session_state['matti_da_fare'] = nomi_list.copy()
 
-            # Calcolo della prima estrazione
-            primo_target = random.randint(base - var, base + var)
-            st.session_state['prossimo_target_matto'] = max(1, primo_target)
-        
-        st.session_state['fase_gioco'] = 'gioco'
-        st.success("Tutto pronto. Non pentirtene.")
-        st.rerun()
+                # Calcolo della prima estrazione
+                primo_target = random.randint(base - var, base + var)
+                st.session_state['prossimo_target_matto'] = max(1, primo_target)
+            
+            st.session_state['fase_gioco'] = 'gioco'
+            st.success("Tutto pronto. Non pentirtene.")
+            st.rerun()
 
 def turno_matto():
     if st.session_state.get('turno_matto', False) and len(st.session_state.get('matti_da_fare', [])) > 0:
