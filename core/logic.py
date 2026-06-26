@@ -35,3 +35,22 @@ def processa_mano(punteggi_round, somma_giocatori):
                 st.session_state['punteggi'][nome] += p
             else:
                 st.session_state['punteggi'][nome] = p
+    
+def annulla_mano():
+    if st.session_state['storico']:
+        col_undo, _ = st.columns([1, 3])
+        with col_undo:
+            if st.button("↩️ Annulla Ultima Mano", type="secondary"):
+                try:
+                    ultima_mano = st.session_state['storico'].pop()
+                    for nome, punti in ultima_mano.items():
+                        if not str(nome).startswith('_'): # Ignora metadati del matto
+                            if nome in st.session_state['punteggi']:
+                                st.session_state['punteggi'][nome] -= punti
+                            else:
+                                st.session_state['punteggi'][nome] = -punti
+                    st.success("Ultima mano annullata!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Errore: {e}")
+                    

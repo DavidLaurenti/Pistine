@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import core.logic as logic
 
 def render_dashboard():
     """Disegna le classifiche, lo storico e i grafici."""
@@ -55,3 +56,23 @@ def render_dashboard():
             st.line_chart(df_chart)
         else:
             st.info("Gioca qualche mano per vedere i grafici!")
+
+def inserimento_punti_form():
+    st.write("Inserisci vincite/perdite degli altri.")
+    with st.form("form_mano", clear_on_submit=True):
+        punti_round = {}
+        cols = st.columns(len(st.session_state['giocatori']))
+        somma_giocatori = 0.0
+
+        for i, nome in enumerate(st.session_state['giocatori']):
+            with cols[i]:
+                if nome == st.session_state['mazziere_corrente']:
+                    st.text_input(f"{nome} (Banco)", value="?", disabled=True)
+                else:
+                    val = st.number_input(f"{nome}", step=0.5, value=0.0)
+                    punti_round[nome] = val
+                    somma_giocatori += val
+
+        if st.form_submit_button("💰 Conferma Mano"):
+            logic.processa_mano(punti_round, somma_giocatori)
+            st.rerun()
