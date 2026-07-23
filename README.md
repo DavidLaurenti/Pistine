@@ -2,6 +2,8 @@
 
 Mini app in Streamlit per contare i punteggi di **Pistine**, una variante del Sette e Mezzo a cui vengono aggiunti elementi del Black Jack.
 
+🎲 Gioca subito su [pistine-matte.streamlit.app](https://pistine-matte.streamlit.app)
+
 È utilizzabile in generale per tutti i giochi in cui, a ogni turno, un mazziere gioca contro gli altri giocatori e la sua vincita corrisponde alla somma invertita (di segno + o -) delle vincite/perdite degli altri.
 
 ## Funzionalità
