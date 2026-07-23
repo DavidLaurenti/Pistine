@@ -20,6 +20,9 @@ if st.session_state['fase_gioco'] == 'setup':
     stp.render_setup()
 
 elif st.session_state['fase_gioco'] == 'gioco':
+    # Suono di inizio partita (se innescato dal setup)
+    stp.play_suono_inizio()
+
     # Barra Laterale (Aggiungi/Cambia Mazziere)
     render_sidebar()
 

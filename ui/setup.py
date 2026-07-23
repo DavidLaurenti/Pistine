@@ -3,6 +3,19 @@ import random
 from pathlib import Path
 
 SUONO_MATTO = Path(__file__).resolve().parent.parent / "sounds" / "Kill Bill Ironside Siren Sound.mp3"
+SUONO_INIZIO = Path(__file__).resolve().parent.parent / "sounds" / "metal pipe falling sound effect.mp3"
+
+def _riproduci_audio_nascosto(percorso):
+    st.markdown(
+        "<style>div[data-testid='stAudio'] { display: none; }</style>",
+        unsafe_allow_html=True,
+    )
+    st.audio(str(percorso), autoplay=True)
+
+def play_suono_inizio():
+    """Riproduce il suono di inizio partita, se innescato dal setup, una sola volta."""
+    if st.session_state.pop('riproduci_suono_inizio', False) and SUONO_INIZIO.exists():
+        _riproduci_audio_nascosto(SUONO_INIZIO)
 
 def render_setup():
     st.header("Impostazioni Iniziali")
@@ -58,6 +71,7 @@ def render_setup():
                 st.session_state['prossimo_target_matto'] = max(1, primo_target)
             
             st.session_state['fase_gioco'] = 'gioco'
+            st.session_state['riproduci_suono_inizio'] = True
             st.success("Tutto pronto. Non pentirtene.")
             st.rerun()
 
@@ -76,11 +90,7 @@ def turno_matto():
                     st.session_state['matto_corrente'] = mazziere
                     st.session_state['mostra_banner_matto'] = True
                     if SUONO_MATTO.exists():
-                        st.markdown(
-                            "<style>div[data-testid='stAudio'] { display: none; }</style>",
-                            unsafe_allow_html=True,
-                        )
-                        st.audio(str(SUONO_MATTO), autoplay=True)
+                        _riproduci_audio_nascosto(SUONO_MATTO)
             else:
                 # SILENZIO ASSOLUTO: Il turno matto è in agguato per il prossimo cambio mazziere.
                 st.session_state['matto_corrente'] = None
