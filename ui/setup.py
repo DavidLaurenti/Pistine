@@ -1,11 +1,15 @@
 import streamlit as st
 import random
+from pathlib import Path
+
+SUONO_MATTO = Path(__file__).resolve().parent.parent / "sounds" / "Kill Bill Ironside Siren Sound.mp3"
 
 def render_setup():
     st.header("Impostazioni Iniziali")
     st.write("Configura il gioco prima di iniziare a giocare. Sballino.")
 
     # Inserimento giocatori
+    st.info("💡 Inserisci i nomi separati da virgola.")
     nomi_input = st.text_input("Nome Giocatore")
 
     # Creazione lista dei giocatori
@@ -71,6 +75,12 @@ def turno_matto():
                 if st.session_state.get('matto_corrente') != mazziere:
                     st.session_state['matto_corrente'] = mazziere
                     st.session_state['mostra_banner_matto'] = True
+                    if SUONO_MATTO.exists():
+                        st.markdown(
+                            "<style>div[data-testid='stAudio'] { display: none; }</style>",
+                            unsafe_allow_html=True,
+                        )
+                        st.audio(str(SUONO_MATTO), autoplay=True)
             else:
                 # SILENZIO ASSOLUTO: Il turno matto è in agguato per il prossimo cambio mazziere.
                 st.session_state['matto_corrente'] = None
