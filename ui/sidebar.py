@@ -48,6 +48,17 @@ def render_sidebar():
 
         st.divider()
 
+        # CONTATORE TURNO MATTO: chi l'ha già fatto e chi manca ancora
+        if st.session_state.get('turno_matto'):
+            st.subheader("🃏 Turno Matto")
+            da_fare = st.session_state.get('matti_da_fare', [])
+            fatto = [g for g in st.session_state['giocatori'] if g not in da_fare]
+
+            st.markdown(f"✅ **Fatto** ({len(fatto)}): {', '.join(fatto) if fatto else '—'}")
+            st.markdown(f"⏳ **Da fare** ({len(da_fare)}): {', '.join(da_fare) if da_fare else 'Tutti fatto! 🎉'}")
+
+            st.divider()
+
         if st.button("🔴 Resetta Partita"):
             st.session_state['punteggi'] = {k: 0.0 for k in st.session_state['giocatori']}
             st.session_state['storico'] = []
