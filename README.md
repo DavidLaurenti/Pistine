@@ -1,1 +1,25 @@
-Una prova mi rendo conto piuttosto bruttina, ma sto cercando di migliorare. Comunque è una mini app su streamlit per contare i punteggi di Pistine, una versione di sette e mezzo a cui vengono aggiunti elementi del Black Jack. Si può usare in generale in tutti quei giochi dove a ogni turno c'è un mazziere che gioca contro gli altri giocatori, e la vincita del mazziere è la somma invertita della vincita (in segno + o -) degli altri giocatori. Prevede la possibilità di inserire numero giocatori, storico vincite/perdite, cambiare numero giocatori e visualizzare statistiche interessanti. Enjoy, giocare sempre responsabilmente.
+# Pistine
+
+Mini app in Streamlit per contare i punteggi di **Pistine**, una variante del Sette e Mezzo a cui vengono aggiunti elementi del Black Jack.
+
+È utilizzabile in generale per tutti i giochi in cui, a ogni turno, un mazziere gioca contro gli altri giocatori e la sua vincita corrisponde alla somma invertita (di segno + o -) delle vincite/perdite degli altri.
+
+## Funzionalità
+
+- Impostazione iniziale di giocatori e primo mazziere
+- Registrazione delle vincite/perdite ad ogni mano, con calcolo automatico del punteggio del mazziere
+- Storico delle mani giocate, con possibilità di annullare l'ultima
+- Aggiunta giocatori e cambio mazziere a partita in corso
+- Classifica e grafici sull'andamento del bilancio
+- Turno Matto opzionale: turno matto allora si gioca duro
+
+## Avvio
+
+```bash
+pip install -r requirements.txt
+streamlit run main.py
+```
+
+---
+
+Ancora in lavorazione, ma funzionante. Enjoy, giocare sempre responsabilmente.
