@@ -1,6 +1,8 @@
 import streamlit as st
 import random
 
+import core.db as db
+
 def processa_mano(punteggi_round, somma_giocatori):
     """Aggiorna punteggi e storico giocatori e gestisci turno matto se abilitato."""
     # 1. Calcolo dei punti del mazziere
@@ -53,6 +55,7 @@ def annulla_mano():
                         giocatore_matto = ultima_mano.get('_matto_player')
                         if giocatore_matto and giocatore_matto not in st.session_state['matti_da_fare']:
                             st.session_state['matti_da_fare'].append(giocatore_matto)
+                    db.salva_stato_sessione(st.session_state)
                     st.success("Ultima mano annullata!")
                     st.rerun()
                 except Exception as e:

@@ -1,6 +1,8 @@
 import streamlit as st
 import random
 
+import core.db as db
+
 def render_sidebar():
     """Disegna la barra laterale per la gestione dei giocatori e del mazziere."""
     with st.sidebar:
@@ -20,6 +22,7 @@ def render_sidebar():
                         st.session_state['punteggi'][nuovo_giocatore] = 0.0
                     if len(st.session_state['giocatori']) == 1:
                         st.session_state['mazziere_corrente'] = nuovo_giocatore
+                    db.salva_stato_sessione(st.session_state)
                     st.rerun()
                 
         st.divider()
@@ -44,6 +47,7 @@ def render_sidebar():
 
             if mazziere != st.session_state['mazziere_corrente']:
                 st.session_state['mazziere_corrente'] = mazziere
+                db.salva_stato_sessione(st.session_state)
                 st.rerun()
 
         st.divider()
@@ -72,4 +76,5 @@ def render_sidebar():
                 st.session_state['prossimo_target_matto'] = max(1, random.randint(base - var, base + var))
                 st.session_state['matto_corrente'] = None
                 st.session_state['mostra_banner_matto'] = False
+            db.salva_stato_sessione(st.session_state)
             st.rerun()

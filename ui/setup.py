@@ -1,6 +1,9 @@
 import streamlit as st
 import random
+import uuid
 from pathlib import Path
+
+import core.db as db
 
 SUONO_MATTO = Path(__file__).resolve().parent.parent / "sounds" / "Kill Bill Ironside Siren Sound.mp3"
 SUONO_INIZIO = Path(__file__).resolve().parent.parent / "sounds" / "metal pipe falling sound effect.mp3"
@@ -72,8 +75,32 @@ def render_setup():
             
             st.session_state['fase_gioco'] = 'gioco'
             st.session_state['riproduci_suono_inizio'] = True
+
+            # Creiamo una nuova partita nel database: da questo momento
+            # ogni mano viene salvata e la partita sopravvive ai riavvii.
+            game_id = uuid.uuid4().hex[:8]
+            st.session_state['game_id'] = game_id
+            st.query_params['game'] = game_id
+            db.salva_stato_sessione(st.session_state)
+
             st.success("Tutto pronto. Non pentirtene.")
             st.rerun()
+
+def mostra_link_live():
+    """Mostra un link condivisibile per seguire la partita in sola lettura, in diretta."""
+    game_id = st.session_state.get('game_id')
+    if not game_id:
+        return
+
+    base_url = (st.context.url or "").split("?")[0].rstrip("/")
+    link = f"{base_url}/?game={game_id}&view=1"
+
+    with st.expander("👀 Segui partita in diretta"):
+        st.caption(
+            "Chi apre questo link vede la partita aggiornarsi da sola ogni pochi secondi, "
+            "senza poter modificare nulla."
+        )
+        st.code(link, language=None)
 
 def turno_matto():
     if st.session_state.get('turno_matto', False) and len(st.session_state.get('matti_da_fare', [])) > 0:
@@ -116,6 +143,7 @@ def turno_matto():
                 with col_btn1:
                     if st.button("❌ Chiudi Avviso e Gioca"):
                         st.session_state['mostra_banner_matto'] = False
+                        db.salva_stato_sessione(st.session_state)
                         st.rerun()
                 with col_btn2:
                     if st.button("⏭️ Posticipa Turno Matto"):
@@ -124,6 +152,7 @@ def turno_matto():
                         st.session_state['mostra_banner_matto'] = False
                         st.session_state['matto_corrente'] = None
                         st.session_state['prossimo_target_matto'] = mani_giocate + random.randint(2, 4)
+                        db.salva_stato_sessione(st.session_state)
                         st.rerun()
             else:
                 st.warning(f"🃏 Promemoria: Questa mano è il Turno Matto del banco (**{st.session_state['matto_corrente']}**)")
